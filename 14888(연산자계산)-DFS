@@ -1,0 +1,61 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include <math.h>
+
+const int MAX = 100000000 + 1;
+
+using namespace std;
+
+int n;
+int number[12], Operator[4];
+int maxResult = -MAX, minResult = MAX;
+
+
+void dfs(int p, int s, int m, int d, int cnt,int sum)
+{
+	if (cnt == n)
+	{
+		maxResult = max(maxResult, sum);
+		minResult = min(minResult, sum);
+	}
+
+	if(p>0)
+	{
+		dfs(p - 1, s, m, d, cnt + 1, sum + number[cnt]);
+	}
+	if (s > 0)
+	{
+		dfs(p , s-1, m, d, cnt + 1, sum - number[cnt]);
+	}
+	if (m > 0)
+	{
+		dfs(p, s, m-1, d, cnt + 1, sum * number[cnt]);
+	}
+	if (d > 0)
+	{
+		dfs(p, s , m, d-1, cnt + 1, sum/number[cnt]);
+	}
+}
+
+
+int main() {
+	
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> number[i];
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		cin >> Operator[i];
+	}
+
+	dfs(Operator[0], Operator[1], Operator[2], Operator[3],1,number[0]);
+
+	cout << maxResult << "\n";
+	cout << minResult << "\n";
+	return 0;
+}
